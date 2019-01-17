@@ -26,6 +26,7 @@ ZK_TICK_TIME=${ZK_TICK_TIME:-2000}
 ZK_INIT_LIMIT=${ZK_INIT_LIMIT:-10}
 ZK_SYNC_LIMIT=${ZK_SYNC_LIMIT:-5}
 ZK_HEAP_SIZE=${ZK_HEAP_SIZE:-2G}
+ZK_JVM_OPTS=${ZK_JVM_OPTS:-}
 ZK_MAX_CLIENT_CNXNS=${ZK_MAX_CLIENT_CNXNS:-60}
 ZK_MIN_SESSION_TIMEOUT=${ZK_MIN_SESSION_TIMEOUT:- $((ZK_TICK_TIME*2))}
 ZK_MAX_SESSION_TIMEOUT=${ZK_MAX_SESSION_TIMEOUT:- $((ZK_TICK_TIME*20))}
@@ -80,6 +81,7 @@ function validate_env() {
     echo "ZK_HEAP_SIZE=$ZK_HEAP_SIZE"
     echo "ZK_SNAP_RETAIN_COUNT=$ZK_SNAP_RETAIN_COUNT"
     echo "ZK_PURGE_INTERVAL=$ZK_PURGE_INTERVAL"
+    echo "ZK_JVM_OPTS=$ZK_JVM_OPTS"
     echo "ENSEMBLE"
     print_servers
     echo "Environment validation successful"
@@ -150,7 +152,7 @@ function create_java_env() {
     rm -f $JAVA_ENV_FILE
     echo "Creating JVM configuration file"
     echo "ZOO_LOG_DIR=$ZK_LOG_DIR" >> $JAVA_ENV_FILE
-    echo "JVMFLAGS=\"-Xmx$ZK_HEAP_SIZE -Xms$ZK_HEAP_SIZE\"" >> $JAVA_ENV_FILE
+    echo "JVMFLAGS=\"-Xmx$ZK_HEAP_SIZE -Xms$ZK_HEAP_SIZE $ZK_JVM_OPTS\"" >> $JAVA_ENV_FILE
     echo "Wrote JVM configuration to $JAVA_ENV_FILE"
 }
 
